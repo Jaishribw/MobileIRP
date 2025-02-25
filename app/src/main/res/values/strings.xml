@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">MoBileIRP</string>
+    <string name="something_went_wrong">Something went wrong</string>
+    <string name="search_icon">Search</string>
+    <string name="clear_icon">Clear</string>
+    <string name="search_books">Search Book</string>
+</resources>
