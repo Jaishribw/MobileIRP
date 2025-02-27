@@ -1,4 +1,5 @@
 package com.example.mobileirp.ui.customcomposable
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -13,6 +14,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,6 +32,9 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.mobileirp.model.MyRowItem
 import com.example.mobileirp.vm.MyViewModel
 import androidx.paging.compose.items
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -38,7 +43,17 @@ fun MyScreen(
     contentPadding: PaddingValues = PaddingValues(20.dp),
 ) {
     val lazyPagingItems :LazyPagingItems<MyRowItem> =  viewModel.pagingDataFlow.collectAsLazyPagingItems()
-    var pageNo :Int?= 1
+    var pageNo :Int?= -1
+    var text = ""
+    LaunchedEffect(pageNo) {
+        CoroutineScope(Dispatchers.IO).launch{
+            text += ":$pageNo"
+            Log.d("PageNo: in LaunchedEffect","$text:$pageNo")
+
+        }
+    }
+    Text(text = text, color = Color.Blue, fontSize = 16.sp,
+        fontWeight = FontWeight.Bold,fontStyle = FontStyle.Italic )
     LazyColumn(modifier = Modifier.padding(contentPadding)) {
 
         stickyHeader {
@@ -52,9 +67,14 @@ fun MyScreen(
             }
         }
         items (lazyPagingItems) { item ->
-            pageNo = item?.pageId
-            Text(text = item?.name ?: "Loading...", color = Color.Blue, fontSize = 16.sp,
+            val title by remember { mutableStateOf(item?.name ?: "Loading...")}
+            text = title
+            Text(text = text, color = Color.Blue, fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,fontStyle = FontStyle.Italic )
+                pageNo = item?.pageId
+            Log.d("PageNo: ",item?.name+":$pageNo")
+
+
         }
 
 
