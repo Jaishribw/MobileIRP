@@ -2,13 +2,11 @@ package com.example.mobileirp
 
 import android.os.Bundle
 import android.util.Log
-import android.widget.EditText
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -38,8 +36,42 @@ class DemoActivity : ComponentActivity() {
                 Counter()
             }
         }
+
+        Log.d("DemoActivity LC: ","onCreate")
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.d("DemoActivity LC: ","OnStart")
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("DemoActivity LC: ", "OnResume")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d("DemoActivity LC: ", "OnPause")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d("DemoActivity LC: ", "OnStop")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("DemoActivity LC: ", "OnDestroy")
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        Log.d("DemoActivity LC: ", "OnBackPressed")
     }
 }
+
 
 @Preview
 @Composable
@@ -53,7 +85,7 @@ fun SimpleOutlinedTextFieldSample() {
     )
 }
 
-
+@Preview
 @Composable
 fun Counter(){
     val count = remember { mutableIntStateOf(0) }
@@ -64,7 +96,7 @@ fun Counter(){
         verticalArrangement = Arrangement.Center
     ) {
 
-        var text by remember { mutableStateOf(0) }
+        var text by remember { mutableIntStateOf(0) }
         Button(onClick = {
             count.intValue = text
         }, Modifier.fillMaxWidth()/*.align(Alignment.CenterVertically)*/.padding(40.dp, 100.dp, 40.dp, 40.dp)) {
@@ -83,9 +115,19 @@ fun Counter(){
     }*/
     val key = count.intValue % 3 == 0
     Log.d("Counter : ${count.intValue}",  key.toString())
-
+    var element = 0
+    val numList = listOf(1,1,2,2,3,4,4,5,9, 7)
+    for (i in numList.indices){
+        element = numList[i]
+    }
+    LaunchedEffect(count.intValue) {
+        Log.d("Launched Effect: element", element.toString())
+    }
+    LaunchedEffect(count.intValue) {
+        Log.d("Launched Effect: count", count.intValue.toString())
+    }
     LaunchedEffect(key) {
 
         Log.d("Counter Change to  ${count.intValue}: ",  key.toString())
     }
-    }
+}
